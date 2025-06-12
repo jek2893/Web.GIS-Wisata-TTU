@@ -37,7 +37,6 @@
       background-color: rgba(255, 255, 255, 0.429);
       margin: 20px;
       border-radius: 10px;
-      position: relative;
     }
     section.active {
       display: block;
@@ -48,7 +47,6 @@
       text-align: center;
       padding: 60px 20px;
       border-radius: 10px;
-      position: relative;
     }
     #beranda-logo {
       position: absolute;
@@ -85,7 +83,6 @@
       color: white;
       text-align: center;
       padding: 30px 20px;
-      position: relative;
       border-radius: 10px;
     }
     #logo, #beranda-logo {
@@ -117,6 +114,29 @@
     .anggota p {
       margin-top: 8px;
     }
+    .lihat-peta-button {
+      margin-top: 20px;
+      padding: 12px 24px;
+      background-color: #fff;
+      color: #0076b6;
+      border: none;
+      border-radius: 8px;
+      font-weight: bold;
+      cursor: pointer;
+      transition: background 0.3s;
+    }
+    .lihat-peta-button:hover {
+      background-color: #e0e0e0;
+    }
+    .leaflet-control-search {
+      z-index: 1000 !important;
+      position: absolute;
+      top: 10px;
+      left: 10px;
+      background: white;
+      padding: 6px;
+      border-radius: 8px;
+    }
   </style>
 </head>
 <body>
@@ -132,6 +152,7 @@
   <img src="img/logo-ttu.png" alt="Logo TTU" id="beranda-logo">
   <h1>Selamat Datang di WebGIS Wisata TTU</h1>
   <p>Temukan lokasi wisata menarik di Kabupaten Timor Tengah Utara</p>
+  <button class="lihat-peta-button" onclick="tampilkan('peta')">Lihat Peta</button>
 </section>
 
 <section id="data-wisata">
@@ -169,7 +190,7 @@
 
   const wisataList = document.querySelector('.wisata-list');
   const dataWisata = [
-    ["naibenu.jpg", "Bukit faunoem", [-9.270,124.400]],
+    ["naibenu.jpg", "Bukit Faunoem", [-9.270,124.400]],
     ["kefa.jpg", "Gereja St. Antonius Sasi", [-9.502,124.491]],
     ["insana.jpg", "Sonaf Oelolok", [-9.461,124.675]],
     ["wini.jpg", "Tanjung Bastian", [-9.172,124.531]],
@@ -203,13 +224,24 @@
     attribution: '&copy; OpenStreetMap contributors'
   }).addTo(map);
 
+  const wisataLayer = L.layerGroup().addTo(map);
+
   dataWisata.forEach(([img, name, coord]) => {
-    const marker = L.marker(coord).addTo(map);
-    marker.bindPopup(`
-      <b>${name}</b><br>
-      <img src="img/${img}" alt="${name}" style="width:150px; border-radius:8px;">
-    `);
+    const marker = L.marker(coord)
+      .bindPopup(`<b>${name}</b><br><img src="img/${img}" alt="${name}" style="width:150px; border-radius:8px;">`);
+    marker.nama = name;
+    wisataLayer.addLayer(marker);
   });
+
+  const searchControl = new L.Control.Search({
+    layer: wisataLayer,
+    propertyName: 'nama',
+    initial: false,
+    zoom: 15,
+    marker: false
+  });
+
+  map.addControl(searchControl);
 </script>
 
 </body>
