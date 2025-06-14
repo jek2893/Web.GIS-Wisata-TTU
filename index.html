@@ -16,6 +16,18 @@
       background-position: center;
       background-repeat: no-repeat;
     }
+
+    .menu-toggle {
+      position: absolute;
+      top: 12px;
+      right: 12px;
+      display: none;
+      cursor: pointer;
+      font-size: 28px;
+      color: white;
+      z-index: 1001;
+    }
+
     nav {
       background-color: #023d8a;
       padding: 10px;
@@ -23,37 +35,66 @@
       justify-content: center;
       gap: 20px;
     }
+
     nav a {
-      color: rgba(255, 255, 255, 0.45);
+      color: rgba(255, 255, 255, 0.85);
       text-decoration: none;
       font-weight: bold;
     }
+
     nav a:hover {
       text-decoration: underline;
     }
+
+    @media (max-width: 768px) {
+      nav {
+        display: none;
+        flex-direction: column;
+        position: absolute;
+        top: 50px;
+        right: 12px;
+        background-color: #023d8a;
+        padding: 10px;
+        border-radius: 8px;
+        z-index: 1000;
+      }
+      nav.show {
+        display: flex;
+      }
+      .menu-toggle {
+        display: block;
+      }
+    }
+
     section {
       display: none;
       padding: 20px;
       background-color: rgba(255, 255, 255, 0.429);
       margin: 20px;
       border-radius: 10px;
+      position: relative;
     }
+
     section.active {
       display: block;
     }
+
     #beranda {
       background: rgba(0, 118, 182, 0.865);
       color: white;
       text-align: center;
       padding: 60px 20px;
       border-radius: 10px;
+      position: relative;
     }
+
     #beranda-logo {
       position: absolute;
       top: 20px;
       right: 20px;
       width: 80px;
     }
+
     .wisata-item {
       display: inline-block;
       margin: 10px;
@@ -63,36 +104,44 @@
       overflow: hidden;
       box-shadow: 0 2px 4px rgba(0,0,0,0.2);
     }
+
     .wisata-item img {
       width: 100%;
       height: 140px;
       object-fit: cover;
     }
+
     .wisata-item p {
       padding: 10px;
       font-weight: bold;
       text-align: center;
     }
+
     #map {
       height: 90vh;
       width: 100%;
       border-radius: 10px;
     }
+
     #pembuat {
       background: #023d8a68;
       color: white;
       text-align: center;
       padding: 30px 20px;
+      position: relative;
       border-radius: 10px;
     }
+
     #logo, #beranda-logo {
       width: 80px;
     }
+
     #logo {
       position: absolute;
       top: 20px;
       right: 20px;
     }
+
     .anggota-container {
       display: flex;
       flex-wrap: wrap;
@@ -100,10 +149,12 @@
       gap: 20px;
       margin-top: 30px;
     }
+
     .anggota {
       max-width: 120px;
       text-align: center;
     }
+
     .anggota img {
       width: 100px;
       height: 100px;
@@ -111,9 +162,11 @@
       object-fit: cover;
       border: 2px solid #fff;
     }
+
     .anggota p {
       margin-top: 8px;
     }
+
     .lihat-peta-button {
       margin-top: 20px;
       padding: 12px 24px;
@@ -125,9 +178,11 @@
       cursor: pointer;
       transition: background 0.3s;
     }
+
     .lihat-peta-button:hover {
       background-color: #e0e0e0;
     }
+
     .leaflet-control-search {
       z-index: 1000 !important;
       position: absolute;
@@ -140,6 +195,8 @@
   </style>
 </head>
 <body>
+
+<div class="menu-toggle" onclick="toggleMenu()">&#9776;</div>
 
 <nav>
   <a href="#" onclick="tampilkan('beranda')">Beranda</a>
@@ -172,7 +229,7 @@
     <div class="anggota"><img src="img/patrick.jpg"><p>Patrick W. Koroh</p></div>
     <div class="anggota"><img src="img/charles.jpg"><p>Charles K. Gonsalves</p></div>
     <div class="anggota"><img src="img/mario.jpg"><p>Mario R. Bria</p></div>
-    <div class="anggota"><img src="img/mikhael.jpg"><p>Mikhael T.B. Bria Klau</p></div>
+    <div class="anggota"><img src="img/mikhael.jpg"><p>Mikhael T.B Bria Klau</p></div>
   </div>
 </section>
 
@@ -186,6 +243,17 @@
     if (id === 'peta') {
       setTimeout(() => map.invalidateSize(), 300);
     }
+
+    // Sembunyikan menu setelah klik di layar kecil
+    const nav = document.querySelector('nav');
+    if (window.innerWidth <= 768) {
+      nav.classList.remove('show');
+    }
+  }
+
+  function toggleMenu() {
+    const nav = document.querySelector('nav');
+    nav.classList.toggle('show');
   }
 
   const wisataList = document.querySelector('.wisata-list');
