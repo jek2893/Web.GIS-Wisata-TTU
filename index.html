@@ -117,6 +117,14 @@
       text-align: center;
     }
 
+    .deskripsi {
+      font-weight: normal;
+      font-size: 14px;
+      color: #444;
+      padding: 0 10px 10px;
+      text-align: justify;
+    }
+
     #map {
       height: 90vh;
       width: 100%;
@@ -244,7 +252,6 @@
       setTimeout(() => map.invalidateSize(), 300);
     }
 
-    // Sembunyikan menu setelah klik di layar kecil
     const nav = document.querySelector('nav');
     if (window.innerWidth <= 768) {
       nav.classList.remove('show');
@@ -257,32 +264,34 @@
   }
 
   const wisataList = document.querySelector('.wisata-list');
+
   const dataWisata = [
-    ["naibenu.jpg", "Bukit Faunoem", [-9.270,124.400]],
-    ["kefa.jpg", "Gereja St. Antonius Sasi", [-9.502,124.491]],
-    ["insana.jpg", "Sonaf Oelolok", [-9.461,124.675]],
-    ["wini.jpg", "Tanjung Bastian", [-9.172,124.531]],
-    ["sabuin.jpg", "Gua Sabuin", [-9.457,124.478]],
-    ["bitauni.jpg", "Gua Bitauni", [-9.448, 124.671]],
-    ["naen.jpg", "Sawah Naen", [-9.489,124.527]],
-    ["mamsena.jpg", "Padang Mamsena", [-9.487,124.604]],
-    ["bikon.jpg", "Bukit Bikon", [-9.442,124.598]],
-    ["tuntun.jpg", "Padang Tuntun", [-9.376,124.497]],
-    ["besin.jpg", "Air Terjun Besin", [-9.461,124.774]],
-    ["binone.jpg", "Gunung Binone", [-9.535,124.328]],
-    ["oeluan.jpg", "Kolam Renang Oeluan", [-9.604,124.489]],
-    ["biaki.jpg", "Air Terjun Bi'aki", [-9.409,124.179]],
-    ["tuamese.jpg", "Bukit Tuamese", [-9.075,124.694]],
-    ["bijaesunan.jpg", "Bukit Bijaesunan", [-9.505,124.272]],
-    ["oesoko.jpg", "Benteng Oesoko", [-9.173,124.548]],
-    ["pahkoto.jpg", "Air Terjun Pahkoto", [-9.493,124.253]]
+    ["naibenu.jpg", "Bukit Faunoem", "Bukit dengan pemandangan alam yang asri.", [-9.270,124.400]],
+    ["kefa.jpg", "Gereja St. Antonius Sasi", "Gereja bersejarah yang menjadi ikon religi.", [-9.502,124.491]],
+    ["insana.jpg", "Sonaf Oelolok", "Istana tradisional kerajaan Insana.", [-9.461,124.675]],
+    ["wini.jpg", "Tanjung Bastian", "Pantai indah dengan pasir putih dan batu karang.", [-9.172,124.531]],
+    ["sabuin.jpg", "Gua Sabuin", "Gua alami dengan cerita sejarah lokal.", [-9.457,124.478]],
+    ["bitauni.jpg", "Gua Bitauni", "Objek wisata religi dan spiritual masyarakat sekitar.", [-9.448,124.671]],
+    ["naen.jpg", "Sawah Naen", "Hamparan sawah hijau subur di lembah Naen.", [-9.489,124.527]],
+    ["mamsena.jpg", "Padang Mamsena", "Padang luas dengan latar perbukitan.", [-9.487,124.604]],
+    ["bikon.jpg", "Bukit Bikon", "Spot trekking dan sunrise terbaik.", [-9.442,124.598]],
+    ["tuntun.jpg", "Padang Tuntun", "Padang luas tempat penggembalaan ternak.", [-9.376,124.497]],
+    ["besin.jpg", "Air Terjun Besin", "Air terjun bertingkat dengan kolam alami.", [-9.461,124.774]],
+    ["binone.jpg", "Gunung Binone", "Gunung batu dengan jalur pendakian menantang.", [-9.535,124.328]],
+    ["oeluan.jpg", "Kolam Renang Oeluan", "Kolam renang umum dengan pemandangan terbuka.", [-9.604,124.489]],
+    ["biaki.jpg", "Air Terjun Bi'aki", "Air terjun tersembunyi di pedalaman Bi'aki.", [-9.409,124.179]],
+    ["tuamese.jpg", "Bukit Tuamese", "Bukit eksotis dekat perbatasan Timor Leste.", [-9.075,124.694]],
+    ["bijaesunan.jpg", "Bukit Bijaesunan", "Tempat wisata alam dengan panorama 360°.", [-9.505,124.272]],
+    ["oesoko.jpg", "Benteng Oesoko", "Sisa peninggalan sejarah benteng penjajahan.", [-9.173,124.548]],
+    ["pahkoto.jpg", "Air Terjun Pahkoto", "Air terjun alami di tengah hutan tropis.", [-9.493,124.253]]
   ];
 
-  dataWisata.forEach(([img, name]) => {
+  dataWisata.forEach(([img, name, desc]) => {
     wisataList.innerHTML += `
       <div class="wisata-item">
         <img src="img/${img}" alt="${name}">
-        <p>${name}</p>
+        <p><strong>${name}</strong></p>
+        <p class="deskripsi">${desc}</p>
       </div>
     `;
   });
@@ -294,9 +303,9 @@
 
   const wisataLayer = L.layerGroup().addTo(map);
 
-  dataWisata.forEach(([img, name, coord]) => {
+  dataWisata.forEach(([img, name, desc, coord]) => {
     const marker = L.marker(coord)
-      .bindPopup(`<b>${name}</b><br><img src="img/${img}" alt="${name}" style="width:150px; border-radius:8px;">`);
+      .bindPopup(`<b>${name}</b><br>${desc}<br><img src="img/${img}" alt="${name}" style="width:150px; border-radius:8px;">`);
     marker.nama = name;
     wisataLayer.addLayer(marker);
   });
